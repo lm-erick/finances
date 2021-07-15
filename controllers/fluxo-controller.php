@@ -8,11 +8,7 @@ class fluxoController extends Utils
         // Título da página
         $this->title = 'Fluxo Financeiro';
 
-        $modeloConta = $this->load_model('conta/conta-model');
-
         $modelo = $this->load_model('fluxo/fluxo-model');
-
-        $dadosConta = $modeloConta->listarContas();
 
         $dados = $modelo->listarFluxos();
 

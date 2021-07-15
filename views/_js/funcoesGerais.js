@@ -10,10 +10,26 @@ $(document).ready(function () {
 
     $("#alerts div").css("display", "none");
 
+    var nome = $("#form-cadastro input[name=nome]").val();
+    var login = $("#form-cadastro input[name=login]").val();
+    var senha = $("#form-cadastro input[name=senha]").val();
+
+    if (nome == '') {
+      $("#form-cadastro input[name=nome]").focus();
+      return;
+    }
+    if (login == '') {
+      $("#form-cadastro input[name=login]").focus();
+      return;
+    }
+    if (senha == '') {
+      $("#form-cadastro input[name=senha]").focus();
+      return;
+    }
+
     createUser();
 
   });
-
 
 });
 
@@ -29,7 +45,7 @@ function logIn() {
     success: function (retorno) {
 
       if (retorno == 'error') {
-        alert('Usuario error');
+        alert('Usuario ou Senha Inválido');
       } else {
 
         window.location.href = URL_JS + "/controlpanel";

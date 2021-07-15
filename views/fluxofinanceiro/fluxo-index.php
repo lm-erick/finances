@@ -17,26 +17,28 @@ require_once DIR . '/views/_includes/menu.php';
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Descricao</th>
-                <th scope="col">Cod Banco</th>
+                <th scope="col">Conta</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Status</th>
                 <th scope="col">Tipo</th>
-                <th scope="col">Agencia</th>
-                <th scope="col">Conta Corrente</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Data Vencimento</th>
                 <th scope="col">Opções</th>
 
             </tr>
         </thead>
         <tbody>
             <?php foreach ($dados as $dado) : ?>
-                <tr linerow="<?php echo 'id_conta_' . $dado['id_conta'] ?>">
+                <tr linerow="<?php echo 'id_fluxo_' . $dado['id_fluxo'] ?>">
+                    <td label="id_fluxo"><?php echo $dado['id_fluxo'] ?></td>
                     <td label="id_conta"><?php echo $dado['id_conta'] ?></td>
                     <td label="descricao"><?php echo $dado['descricao'] ?></td>
-                    <td label="id_banco"><?php echo $dado['id_banco'] ?></td>
+                    <td label="status"><?php echo $dado['status'] ?></td>
                     <td label="tipo"><?php echo $dado['tipo'] ?></td>
-                    <td label="agencia"><?php echo $dado['agencia'] ?></td>
-                    <td label="conta_corrente"><?php echo $dado['conta_corrente'] ?></td>
+                    <td label="id_categoria"><?php echo $dado['id_categoria'] ?></td>
+                    <td label="data_vencimento"><?php echo $dado['data_vencimento'] ?></td>
                     <td>
-                        <i row="<?php echo 'id_conta_' . $dado['id_conta'] ?>" class="edit far fa-edit"></i>
+                        <i row="<?php echo 'id_fluxo_' . $dado['id_fluxo'] ?>" class="edit far fa-edit"></i>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -100,7 +102,7 @@ require_once DIR . '/views/_includes/menu.php';
 
                         <div class="col-md-6">
                             <label>Tipo</label>
-                            <select class="form-control" type="text" name="id_categoria">
+                            <select class="form-control" type="text" name="tipo">
                                 <option value="receita">Receita</option>
                                 <option value="despesa">Despesa</option>
                             </select>

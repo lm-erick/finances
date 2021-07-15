@@ -1,6 +1,6 @@
 <?php
 
-class contaModel extends Utils
+class fluxoModel extends Utils
 {
 
     public function __construct()
@@ -11,51 +11,24 @@ class contaModel extends Utils
     public function salvarFluxo($post)
     {
 
-        $saldo = $post['saldo'];
-        $id_banco = $post['id_banco'];
         $descricao = $post['descricao'];
-        $tipo = $post['tipo'];
-        $agencia = $post['agencia'];
-        $conta_corrente = $post['conta_corrente'];
-
-        $sql = $this->db->prepare("INSERT INTO contas (saldo, id_banco, descricao, tipo, agencia, conta_corrente) 
-        VALUES (:saldo, :id_banco, :descricao, :tipo, :agencia, :conta_corrente)");
-
-        $sql->bindParam(':saldo', $saldo);
-        $sql->bindParam(':id_banco', $id_banco);
-        $sql->bindParam(':descricao', $descricao);
-        $sql->bindParam(':tipo', $tipo);
-        $sql->bindParam(':agencia', $agencia);
-        $sql->bindParam(':conta_corrente', $conta_corrente);
-
-        try {
-
-            $sql->execute();
-            return true;
-        } catch (Exception $e) {
-
-            return false;
-        }
-    }
-
-    public function updateConta($post)
-    {
-
-        $id_banco = $post['id_banco'];
-        $descricao = $post['descricao'];
-        $tipo = $post['tipo'];
-        $agencia = $post['agencia'];
-        $conta_corrente = $post['conta_corrente'];
+        $data_vencimento = $post['data_vencimento'];
+        $status = $post['status'];
+        $valor = $post['valor'];
         $id_conta = $post['id_conta'];
+        $id_categoria = $post['id_categoria'];
+        $tipo = $post['tipo'];
 
-        $sql = $this->db->prepare("UPDATE contas SET id_banco = :id_banco, descricao = :descricao, tipo = :tipo, agencia = :agencia, conta_corrente = :conta_corrente WHERE id_conta = :id_conta");
+        $sql = $this->db->prepare("INSERT INTO fluxos (descricao, data_vencimento, status, valor, id_conta, id_categoria, tipo) 
+                                    VALUES (:descricao, :data_vencimento, :status, :valor  :id_conta, :id_categoria, :tipo)");
 
-        $sql->bindParam(':id_banco', $id_banco);
         $sql->bindParam(':descricao', $descricao);
-        $sql->bindParam(':tipo', $tipo);
-        $sql->bindParam(':agencia', $agencia);
-        $sql->bindParam(':conta_corrente', $conta_corrente);
+        $sql->bindParam(':data_vencimento', $data_vencimento);
+        $sql->bindParam(':status', $status);
+        $sql->bindParam(':valor', $valor);  
         $sql->bindParam(':id_conta', $id_conta);
+        $sql->bindParam(':id_categoria', $id_categoria);
+        $sql->bindParam(':tipo', $tipo);
 
         try {
 
@@ -67,10 +40,42 @@ class contaModel extends Utils
         }
     }
 
-    public function listarContas()
+    public function updateFluxo($post)
+    {
+        $id_fluxo = $post['id_fluxo'];
+        $descricao = $post['descricao'];
+        $data_vencimento = $post['data_vencimento'];
+        $status = $post['status'];
+        $valor = $post['valor'];
+        $id_conta = $post['id_conta'];
+        $id_categoria = $post['id_categoria'];
+        $tipo = $post['tipo'];
+
+        $sql = $this->db->prepare("UPDATE fluxos SET descricao = :descricao, data_vencimento = :data_vencimento, status = :status, valor = :valor, id_conta = :id_conta, id_categoria = :id_categoria, tipo = :tipo WHERE id_fluxo = :id_fluxo");
+
+        $sql->bindParam(':descricao', $descricao);
+        $sql->bindParam(':data_vencimento', $data_vencimento);
+        $sql->bindParam(':status', $status);
+        $sql->bindParam(':valor', $valor);  
+        $sql->bindParam(':id_conta', $id_conta);
+        $sql->bindParam(':id_categoria', $id_categoria);
+        $sql->bindParam(':tipo', $tipo);
+        $sql->bindParam(':id_fluxo', $id_fluxo);
+
+        try {
+
+            $sql->execute();
+            return true;
+        } catch (Exception $e) {
+
+            return false;
+        }
+    }
+
+    public function listarFluxos()
     {
 
-        $sql = $this->db->prepare("SELECT * FROM  contas");
+        $sql = $this->db->prepare("SELECT * FROM  fluxos");
 
         try {
 

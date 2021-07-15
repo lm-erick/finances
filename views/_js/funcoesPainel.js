@@ -22,7 +22,15 @@ $(document).ready(function () {
 
         salvarConta();
 
-       // window.location.href = URL_JS + "/conta";
+        window.location.href = URL_JS + "/conta";
+
+    });
+
+    $("#modal-crudfluxo").on('click', '.btn-primary', function (event) {
+
+        salvarFluxo();
+
+       //window.location.href = URL_JS + "/fluxo";
 
     });
 
@@ -77,6 +85,7 @@ $(document).ready(function () {
         $('#modal-crudconta').modal('toggle');
 
     });
+
 
     $("#table-banco").on('click', '.deletar', function (event) {
 
@@ -166,6 +175,31 @@ function salvarConta() {
 
                 alert('Conta cadastrada com sucesso!');
                 $('#modal-crudconta').modal('toggle');
+
+            }
+
+        }
+
+    });
+
+}
+
+
+function salvarFluxo() {
+
+    var dados = $("#form-crudfluxo").serialize();
+
+    $.ajax({
+        url: URL_JS + '/fluxo/salvar',
+        type: 'POST',
+        data: dados,
+        dataType: 'json',
+        success: function (retorno) {
+
+            if (retorno == 'success') {
+
+                alert('Fluxo financeiro registrado com sucesso!');
+                $('#modal-crudfluxo').modal('toggle');
 
             }
 
