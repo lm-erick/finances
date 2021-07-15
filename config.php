@@ -25,7 +25,6 @@ if(!@$_GET['api_key']){
     }
 }
 
-//dados do banco - Mongo
 if($_SERVER['HTTP_HOST'] == 'localhost'){
     define( 'URL', 'http://localhost/finances' );
     define( 'URL_API', 'http://localhost/finances' );
@@ -38,5 +37,4 @@ define( 'DIR', dirname( __FILE__ ) );
 define( 'JS', URL."/views/_js/");
 define( 'CSS', URL."/views/_css/");
 
-// Carrega o loader, que vai carregar a aplicação inteira
 require_once DIR . '/loader.php';
