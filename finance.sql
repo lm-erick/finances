@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 16-Jul-2021 às 01:30
+-- Tempo de geração: 05-Ago-2021 às 01:58
 -- Versão do servidor: 10.4.17-MariaDB
 -- versão do PHP: 7.2.34
 
@@ -30,16 +30,18 @@ SET time_zone = "+00:00";
 CREATE TABLE `bancos` (
   `id_banco` int(11) NOT NULL,
   `name` varchar(150) NOT NULL,
-  `cod_banco` varchar(150) NOT NULL
+  `cod_banco` varchar(150) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `bancos`
 --
 
-INSERT INTO `bancos` (`id_banco`, `name`, `cod_banco`) VALUES
-(4, 'Caixa', '250'),
-(5, 'Bradesco', '25463');
+INSERT INTO `bancos` (`id_banco`, `name`, `cod_banco`, `id_user`) VALUES
+(4, 'Caixa', '250', 0),
+(5, 'Bradesco', '25463', 0),
+(14, 'Banco do Brasil', '200', 3);
 
 -- --------------------------------------------------------
 
@@ -49,17 +51,18 @@ INSERT INTO `bancos` (`id_banco`, `name`, `cod_banco`) VALUES
 
 CREATE TABLE `categorias` (
   `id_categoria` int(11) NOT NULL,
-  `nome` varchar(50) NOT NULL
+  `nome` varchar(50) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `categorias`
 --
 
-INSERT INTO `categorias` (`id_categoria`, `nome`) VALUES
-(2, 'mercados'),
-(3, 'testew3'),
-(4, 'Combustivel');
+INSERT INTO `categorias` (`id_categoria`, `nome`, `id_user`) VALUES
+(2, 'mercados', 0),
+(4, 'Combustivel', 0),
+(5, 'Casa', 3);
 
 -- --------------------------------------------------------
 
@@ -74,17 +77,19 @@ CREATE TABLE `contas` (
   `descricao` varchar(100) NOT NULL,
   `tipo` varchar(50) NOT NULL,
   `agencia` varchar(10) NOT NULL,
-  `conta_corrente` varchar(10) NOT NULL
+  `conta_corrente` varchar(10) NOT NULL,
+  `id_user` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `contas`
 --
 
-INSERT INTO `contas` (`id_conta`, `saldo`, `id_banco`, `descricao`, `tipo`, `agencia`, `conta_corrente`) VALUES
-(1, '2123', 4, 'test', 'contacorrente', '2222', '222'),
-(2, '222', 4, 'teste', 'contacorrente', '2222', '22222'),
-(3, '20000', 3, 'teste', 'contacorrente', '33232', '234234');
+INSERT INTO `contas` (`id_conta`, `saldo`, `id_banco`, `descricao`, `tipo`, `agencia`, `conta_corrente`, `id_user`) VALUES
+(1, '2123', 4, 'test', 'contacorrente', '2222', '222', 0),
+(2, '222', 4, 'teste', 'contacorrente', '2222', '22222', 0),
+(3, '20000', 3, 'teste', 'contacorrente', '33232', '234234', 0),
+(4, '200', 14, 'Erick CC', 'contacorrente', '302', '937339', 3);
 
 -- --------------------------------------------------------
 
@@ -96,12 +101,25 @@ CREATE TABLE `fluxos` (
   `id_fluxo` int(11) NOT NULL,
   `descricao` varchar(100) NOT NULL,
   `data_vencimento` date NOT NULL,
-  `status` int(11) NOT NULL,
+  `fluxostatus` varchar(100) NOT NULL,
   `valor` decimal(10,0) NOT NULL,
   `id_conta` int(11) NOT NULL,
   `id_categoria` int(11) NOT NULL,
-  `tipo` varchar(20) NOT NULL
+  `tipo` varchar(20) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `data_pagamento` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `fluxos`
+--
+
+INSERT INTO `fluxos` (`id_fluxo`, `descricao`, `data_vencimento`, `fluxostatus`, `valor`, `id_conta`, `id_categoria`, `tipo`, `id_user`, `data_pagamento`) VALUES
+(5, 'Test', '2021-08-03', 'pago', '200', 4, 5, 'receita', 3, '2021-08-03'),
+(6, 'teste despesa', '2021-08-26', 'pendente', '1000', 4, 5, 'despesa', 3, '0000-00-00'),
+(7, 'teste', '2021-08-11', 'pago', '3000', 0, 0, 'receita', 3, '2021-08-12'),
+(8, 'Teste Mask', '2021-08-12', 'pago', '5', 4, 5, 'despesa', 3, '2021-08-25'),
+(9, 'teste', '2021-04-04', 'pendente', '50', 4, 5, 'receita', 3, '2021-08-31');
 
 -- --------------------------------------------------------
 
@@ -173,25 +191,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de tabela `bancos`
 --
 ALTER TABLE `bancos`
-  MODIFY `id_banco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_banco` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `contas`
 --
 ALTER TABLE `contas`
-  MODIFY `id_conta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_conta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `fluxos`
 --
 ALTER TABLE `fluxos`
-  MODIFY `id_fluxo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_fluxo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `users`
