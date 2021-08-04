@@ -13,6 +13,92 @@ require_once DIR . '/views/_includes/menu.php';
 
     </div>
 
+    <div id="espaco-filtro-fluxo">
+        <form id="filtros-fluxo" class="row">
+
+            <input hidden class="form-control" type="text" name="operacao">
+
+            <div class="col-md-3">
+                <label>Tipo</label>
+                <select class="form-control" type="text" name="tipo">
+                    <option value="ambos">Selecione</option>
+                    <option value="receita">Receita</option>
+                    <option value="despesa">Despesa</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Tipo de data</label>
+                <select class="form-control" type="text" name="tipo_data">
+                    <option value="vencimento">Vencimento</option>
+                    <option value="pagamento">Pagamento</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Data De</label>
+                <input class="form-control" required type="date" name="data_de">
+            </div>
+
+            <div class="col-md-3">
+                <label>Data Até</label>
+                <input class="form-control" required type="date" name="data_ate">
+            </div>
+
+            <div class="col-md-3">
+                <label>Status</label>
+                <select class="form-control" type="text" name="status">
+                    <option value="ambos">Selecione</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Conta</label>
+                <select class="form-control" required type="text" name="id_conta">
+                    <option value="">Selecione</option>
+                    <?php foreach ($dadosConta as $conta) : ?>
+                        <option value="<? echo $conta['id_conta'] ?>"><? echo $conta['descricao'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label>Categoria</label>
+                <select class="form-control" type="text" name="id_categoria">
+                    <option value="">Selecione</option>
+                    <?php foreach ($dadosCategorias as $categoria) : ?>
+                        <option value="<? echo $categoria['id_categoria'] ?>"><? echo $categoria['nome'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+        </form>
+
+        <button type="button" class="btn btn-primary">Calcular</button>
+        <button type="button" class="btn btn-success">Filtrar</button>
+    </div>
+
+    <div id="display">
+
+        <div class="row">
+            <div class="col-md-4">
+                <label>Total de receitas no período</label>
+                <input class="form-control" type="text" name="receitas" class="money2" disabled>
+            </div>
+            <div class="col-md-4">
+                <label>Total de despesas no período</label>
+                <input class="form-control" type="text" name="despesas" class="money2" disabled>
+            </div>
+            <div class="col-md-4">
+                <label>Balanço do período</label>
+                <input class="form-control" type="text" name="balanço" class="money2" disabled>
+            </div>
+        </div>
+
+    </div>
+
     <table id="table-fluxo" class="table table-striped table-bordered table-default">
         <thead>
             <tr>
@@ -23,25 +109,14 @@ require_once DIR . '/views/_includes/menu.php';
                 <th scope="col">Tipo</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Data Vencimento</th>
+                <th scope="col">Data Pagamento</th>
+                <th scope="col">Valor</th>
                 <th scope="col">Opções</th>
 
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($dados as $dado) : ?>
-                <tr linerow="<?php echo 'id_fluxo_' . $dado['id_fluxo'] ?>">
-                    <td label="id_fluxo"><?php echo $dado['id_fluxo'] ?></td>
-                    <td label="id_conta"><?php echo $dado['id_conta'] ?></td>
-                    <td label="descricao"><?php echo $dado['descricao'] ?></td>
-                    <td label="status"><?php echo $dado['status'] ?></td>
-                    <td label="tipo"><?php echo $dado['tipo'] ?></td>
-                    <td label="id_categoria"><?php echo $dado['id_categoria'] ?></td>
-                    <td label="data_vencimento"><?php echo $dado['data_vencimento'] ?></td>
-                    <td>
-                        <i row="<?php echo 'id_fluxo_' . $dado['id_fluxo'] ?>" class="edit far fa-edit"></i>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
+
         </tbody>
     </table>
 
@@ -61,11 +136,12 @@ require_once DIR . '/views/_includes/menu.php';
                             <label>Descrição</label>
                             <input class="form-control" type="text" name="descricao">
                             <input hidden class="form-control" type="text" name="id_fluxo">
+                            <input hidden class="form-control" type="text" name="id_user" value="<?php echo $_SESSION['userId'] ?>">
                         </div>
 
                         <div class="col-md-6">
                             <label>Status</label>
-                            <select class="form-control" type="text" name="tipo">
+                            <select class="form-control" type="text" name="status">
                                 <option value="pendente">Pendente</option>
                                 <option value="pago">Pago</option>
                             </select>
@@ -83,20 +159,26 @@ require_once DIR . '/views/_includes/menu.php';
 
                         <div class="col-md-6">
                             <label>Valor</label>
-                            <input class="form-control" type="number" name="valor">
+                            <input class="form-control" type="text" name="valor">
                         </div>
 
                         <div class="col-md-6">
                             <label>Conta</label>
-                            <select class="form-control" type="text" name="id_conta">
-                                <option value=""></option>
+                            <select class="form-control" required type="text" name="id_conta">
+                                <option value="">Selecione</option>
+                                <?php foreach ($dadosConta as $conta) : ?>
+                                    <option value="<? echo $conta['id_conta'] ?>"><? echo $conta['descricao'] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
                         <div class="col-md-6">
                             <label>Categoria</label>
                             <select class="form-control" type="text" name="id_categoria">
-                                <option value=""></option>
+                                <option value="">Selecione</option>
+                                <?php foreach ($dadosCategorias as $categoria) : ?>
+                                    <option value="<? echo $categoria['id_categoria'] ?>"><? echo $categoria['nome'] ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 

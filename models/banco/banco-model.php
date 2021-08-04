@@ -11,13 +11,15 @@ class bancoModel extends Utils
     public function salvarBanco($post)
     {
 
+        $id_user = $_SESSION['userId'];
         $nome = $post['nome'];
         $codBanco = $post['cod_banco'];
 
-        $sql = $this->db->prepare("INSERT INTO bancos (name, cod_banco) VALUES (:nome, :codbanco)");
+        $sql = $this->db->prepare("INSERT INTO bancos (name, cod_banco, id_user) VALUES (:nome, :codbanco, :id_user)");
 
         $sql->bindParam(':nome', $nome);
         $sql->bindParam(':codbanco', $codBanco);
+        $sql->bindParam(':id_user', $id_user);
 
         try {
 
@@ -55,7 +57,11 @@ class bancoModel extends Utils
     public function listarBancos()
     {
 
-        $sql = $this->db->prepare("SELECT * FROM bancos");
+        $id_user = $_SESSION['userId'];
+
+        $sql = $this->db->prepare("SELECT * FROM bancos WHERE id_user = :id_user");
+
+        $sql->bindParam(':id_user', $id_user);
 
         try {
 

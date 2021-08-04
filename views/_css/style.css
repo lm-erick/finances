@@ -89,12 +89,28 @@ header {
   color: #fff;
 }
 
-#dashboard{
+#dashboard {
   margin-top: 3%;
 }
 
-#espaco-bi{
+#espaco-bi {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#espaco-filtro-fluxo {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#espaco-filtro-fluxo .btn {
+  margin: 10px 0;
+}
+
+#display {
+  border: 1px solid #dee2e6;
+  padding: 10px;
+  margin-bottom: 20px;
 }

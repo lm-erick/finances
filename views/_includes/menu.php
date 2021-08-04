@@ -21,15 +21,19 @@ if (!isset($_SESSION['userId'])) {
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="<?php echo CSS ?>style.css">
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link href="<?php echo URL ?>/views/_includes/fontawesome/css/all.css" rel="stylesheet">
 
   <script defer src="<?php echo URL ?>/views/_includes/fontawesome/js/all.js"></script>
   <script src="<?php echo JS ?>jquery.min.js"></script>
+  <script src="<?php echo JS ?>jquery.mask.min.js"></script>
+
   <script>
     var URL_JS = '<?php echo URL ?>';
   </script>
   <script src="<?php echo JS ?>funcoesPainel.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
   <title><?php echo $this->title; ?></title>
 
@@ -38,6 +42,7 @@ if (!isset($_SESSION['userId'])) {
   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ 
   <script src="<?php echo JS ?>funcoesBI.js"></script>
 
 

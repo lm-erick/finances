@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    $('.date').mask('00/00/0000');
+    $('.money').mask('000.000.000.000.000,00', { reverse: true });
+    $('.money2').mask("#.##0,00", { reverse: true });
+   
     $('.table-default').DataTable();
 
     $("#modal-crudbanco").on('click', '.btn-primary', function (event) {
@@ -30,7 +34,30 @@ $(document).ready(function () {
 
         salvarFluxo();
 
-       //window.location.href = URL_JS + "/fluxo";
+        window.location.href = URL_JS + "/fluxo";
+
+    });
+
+    $("#espaco-filtro-fluxo").on('click', '.btn-primary', function (event) {
+
+        data_de = $("#filtros-fluxo input[name='data_de']").val();
+        data_ate = $("#filtros-fluxo input[name='data_ate']").val();
+
+        if ((data_de == '' || data_ate == '') || (data_de > data_ate)) {
+
+            alert('POR FAVOR COLOCAR DATAS VÁLIDAS');
+
+            return;
+
+        }
+
+        calcularFluxos();
+
+    });
+
+    $("#espaco-filtro-fluxo").on('click', '.btn-success', function (event) {
+
+        filtrarFluxos();
 
     });
 
@@ -86,6 +113,48 @@ $(document).ready(function () {
 
     });
 
+    $("#table-fluxo").on('click', '.edit', function (event) {
+
+        if ($("#modal-crudfluxo select[name='status']").val() == 'pago') {
+
+            $("input[name='data_pagamento']").prop('disabled', false);
+
+        } else {
+
+            $("input[name='data_pagamento']").prop('disabled', true);
+
+        }
+
+        var row = $(this).attr('row');
+
+        var id_fluxo = $("tr[linerow='" + row + "']").find("td[label='id_fluxo']").text();
+        var id_conta = $("tr[linerow='" + row + "']").find("td[label='id_conta']").text();
+        var descricao = $("tr[linerow='" + row + "']").find("td[label='descricao']").text();
+        var status = $("tr[linerow='" + row + "']").find("td[label='status']").text();
+        var tipo = $("tr[linerow='" + row + "']").find("td[label='tipo']").text();
+        var id_categoria = $("tr[linerow='" + row + "']").find("td[label='id_categoria']").text();
+        var valor = $("tr[linerow='" + row + "']").find("td[label='valor']").text();
+        var data_vencimento = $("tr[linerow='" + row + "']").find("td[label='data_vencimento']").text();
+        var data_pagamento = $("tr[linerow='" + row + "']").find("td[label='data_pagamento']").text();
+
+
+        $("#modal-crudfluxo select[name='status']").val(status);
+        $("#modal-crudfluxo select[name='id_categoria']").val(id_categoria);
+        $("#modal-crudfluxo select[name='tipo']").val(tipo);
+        $("#modal-crudfluxo select[name='id_conta']").val(id_conta);
+
+        $("#modal-crudfluxo input[name='descricao']").val(descricao);
+        $("#modal-crudfluxo input[name='valor']").val(valor);
+        $("#modal-crudfluxo input[name='id_fluxo']").val(id_fluxo);
+
+        $("#modal-crudfluxo input[name='data_vencimento']").val(data_vencimento);
+        $("#modal-crudfluxo input[name='data_pagamento']").val(data_pagamento);
+
+
+
+        $('#modal-crudfluxo').modal('toggle');
+
+    });
 
     $("#table-banco").on('click', '.deletar', function (event) {
 
@@ -106,8 +175,6 @@ $(document).ready(function () {
         window.location.href = URL_JS + "/categoria";
 
     });
-
-
 
 });
 
@@ -214,14 +281,14 @@ function deletarBanco(id) {
     $.ajax({
         url: URL_JS + '/banco/deletarBanco',
         type: 'POST',
-        data: {id_banco: id},
+        data: { id_banco: id },
         dataType: 'json',
         success: function (retorno) {
 
             if (retorno) {
 
                 alert('Banco deletado com sucesso!');
-            
+
             }
 
         }
@@ -235,14 +302,14 @@ function deletarCategoria(id) {
     $.ajax({
         url: URL_JS + '/categoria/deletarCategoria',
         type: 'POST',
-        data: {id_categoria: id},
+        data: { id_categoria: id },
         dataType: 'json',
         success: function (retorno) {
 
             if (retorno) {
 
                 alert('Categoria deletada com sucesso!');
-            
+
             }
 
         }
@@ -251,6 +318,93 @@ function deletarCategoria(id) {
 
 }
 
+function calcularFluxos() {
+
+    $("#filtros-fluxo input[name='operacao']").val("calcular");
+
+    var dados = $("#filtros-fluxo").serialize();
+
+    $.ajax({
+        url: URL_JS + '/fluxo/filtrarFluxos',
+        type: 'POST',
+        data: dados,
+        dataType: 'json',
+        success: function (retorno) {
+
+            $.each(retorno, function (index, value) {
+
+                montarDisplay(value.tipo, value.valor_total);
+
+            });
+
+            receitas = parseFloat($("input[name='receitas']").val());
+            despesas = parseFloat($("input[name='despesas']").val());
+
+            $("input[name='balanço']").val(receitas - despesas);
+
+        }
+
+    });
+
+}
+
+function montarDisplay(tipo, valor) {
+
+    if (tipo == "receita") $("input[name='receitas']").val(parseFloat(valor));
+
+    if (tipo == "despesa") $("input[name='despesas']").val(parseFloat(valor));
+
+}
+
+function filtrarFluxos() {
+
+    $("#filtros-fluxo input[name='operacao']").val("filtrar");
+
+    var dados = $("#filtros-fluxo").serialize();
+
+    $.ajax({
+        url: URL_JS + '/fluxo/filtrarFluxos',
+        type: 'POST',
+        data: dados,
+        dataType: 'json',
+        success: function (retorno) {
+
+            $.each(retorno, function (index, value) {
+
+                montarTableFluxos(value);
+
+            });
+
+        }
+
+    });
+
+}
+
+function montarTableFluxos(value) {
+
+    $("#table-fluxo tbody").remove();
+
+    $("#table-fluxo").append("<tbody></tbody>");
+
+    $("#table-fluxo tbody").append(
+        '<tr linerow="' + value.id_fluxo + '">' +
+        '<td label="id_fluxo">' + value.id_fluxo + '</td>' +
+        '<td label="id_conta">' + value.id_conta + '</td>' +
+        '<td label="descricao">' + value.descricao + '</td>' +
+        '<td label="status">' + value.fluxostatus + '</td>' +
+        '<td label="tipo">' + value.tipo + '</td>' +
+        '<td label="id_categoria">' + value.id_categoria + '</td>' +
+        '<td label="data_vencimento">' + value.data_vencimento + '</td>' +
+        '<td label="data_pagamento">' + value.data_pagamento + '</td>' +
+        '<td label="valor" class="money2">' + value.valor + '</td>' +
+        '<td>' +
+        '<i row="id_fluxo_' + value.id_fluxo + '" class="edit far fa-edit"></i>' +
+        '</td>' +
+        '</tr>'
+    );
+
+}
 
 function modalShow(modalName, formName) {
 

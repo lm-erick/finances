@@ -12,10 +12,12 @@ class categoriaModel extends Utils
     {
 
         $nome = $post['nome'];
+        $id_user = $_SESSION['userId'];
 
-        $sql = $this->db->prepare("INSERT INTO categorias (nome) VALUES (:nome)");
+        $sql = $this->db->prepare("INSERT INTO categorias (nome, id_user) VALUES (:nome, :id_user)");
 
         $sql->bindParam(':nome', $nome);
+        $sql->bindParam(':id_user', $id_user);
 
         try {
 
@@ -51,7 +53,12 @@ class categoriaModel extends Utils
     public function listarCategorias()
     {
 
-        $sql = $this->db->prepare("SELECT * FROM categorias");
+        $id_user = $_SESSION['userId'];
+
+        $sql = $this->db->prepare("SELECT * FROM categorias WHERE id_user = :id_user");
+
+        $sql->bindParam(':id_user', $id_user);
+
 
         try {
 

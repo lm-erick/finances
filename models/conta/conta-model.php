@@ -17,9 +17,10 @@ class contaModel extends Utils
         $tipo = $post['tipo'];
         $agencia = $post['agencia'];
         $conta_corrente = $post['conta_corrente'];
+        $id_user = $_SESSION['userId'];
 
-        $sql = $this->db->prepare("INSERT INTO contas (saldo, id_banco, descricao, tipo, agencia, conta_corrente) 
-        VALUES (:saldo, :id_banco, :descricao, :tipo, :agencia, :conta_corrente)");
+        $sql = $this->db->prepare("INSERT INTO contas (saldo, id_banco, descricao, tipo, agencia, conta_corrente, id_user) 
+        VALUES (:saldo, :id_banco, :descricao, :tipo, :agencia, :conta_corrente, :id_user)");
 
         $sql->bindParam(':saldo', $saldo);
         $sql->bindParam(':id_banco', $id_banco);
@@ -27,6 +28,7 @@ class contaModel extends Utils
         $sql->bindParam(':tipo', $tipo);
         $sql->bindParam(':agencia', $agencia);
         $sql->bindParam(':conta_corrente', $conta_corrente);
+        $sql->bindParam(':id_user', $id_user);
 
         try {
 
@@ -69,8 +71,11 @@ class contaModel extends Utils
 
     public function listarContas()
     {
+        $id_user = $_SESSION['userId'];
 
-        $sql = $this->db->prepare("SELECT * FROM  contas");
+        $sql = $this->db->prepare("SELECT * FROM contas WHERE id_user = :id_user");
+
+        $sql->bindParam(':id_user', $id_user);
 
         try {
 

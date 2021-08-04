@@ -10,8 +10,16 @@ class fluxoController extends Utils
 
         $modelo = $this->load_model('fluxo/fluxo-model');
 
+        $modeloConta = $this->load_model('conta/conta-model');
+
+        $modeloCategoria = $this->load_model('categoria/categoria-model');
+
         $dados = $modelo->listarFluxos();
 
+        $dadosConta = $modeloConta->listarContas();
+
+        $dadosCategorias = $modeloCategoria->listarCategorias();
+        
         // /views/home/home-view.php
         require DIR . '/views/fluxofinanceiro/fluxo-index.php';
     }
@@ -28,7 +36,7 @@ class fluxoController extends Utils
             $save = $modelo->updateFluxo($_POST);
         }
 
-        $response = '';
+        $response = 'false';
 
         if ($save) {
             $response = 'success';
@@ -45,4 +53,16 @@ class fluxoController extends Utils
 
         echo json_encode($result);
     }
+
+    public function filtrarFluxos()
+    {
+
+        $modelo = $this->load_model('fluxo/fluxo-model');
+
+        $result = $modelo->filtrarFluxos($_POST);
+
+        echo json_encode($result);
+        
+    }
+
 }
