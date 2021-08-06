@@ -115,16 +115,6 @@ $(document).ready(function () {
 
     $("#table-fluxo").on('click', '.edit', function (event) {
 
-        if ($("#modal-crudfluxo select[name='status']").val() == 'pago') {
-
-            $("input[name='data_pagamento']").prop('disabled', false);
-
-        } else {
-
-            $("input[name='data_pagamento']").prop('disabled', true);
-
-        }
-
         var row = $(this).attr('row');
 
         var id_fluxo = $("tr[linerow='" + row + "']").find("td[label='id_fluxo']").text();
@@ -388,7 +378,7 @@ function montarTableFluxos(value) {
     $("#table-fluxo").append("<tbody></tbody>");
 
     $("#table-fluxo tbody").append(
-        '<tr linerow="' + value.id_fluxo + '">' +
+        '<tr linerow="id_fluxo_' + value.id_fluxo + '">' +
         '<td label="id_fluxo">' + value.id_fluxo + '</td>' +
         '<td label="id_conta">' + value.id_conta + '</td>' +
         '<td label="descricao">' + value.descricao + '</td>' +
@@ -397,7 +387,7 @@ function montarTableFluxos(value) {
         '<td label="id_categoria">' + value.id_categoria + '</td>' +
         '<td label="data_vencimento">' + value.data_vencimento + '</td>' +
         '<td label="data_pagamento">' + value.data_pagamento + '</td>' +
-        '<td label="valor" class="money2">' + value.valor + '</td>' +
+        '<td label="valor">' + value.valor + '</td>' +
         '<td>' +
         '<i row="id_fluxo_' + value.id_fluxo + '" class="edit far fa-edit"></i>' +
         '</td>' +

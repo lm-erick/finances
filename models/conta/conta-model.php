@@ -11,6 +11,8 @@ class contaModel extends Utils
     public function salvarConta($post)
     {
 
+        if($this->killPost($post)) return;
+
         $saldo = $post['saldo'];
         $id_banco = $post['id_banco'];
         $descricao = $post['descricao'];
@@ -42,6 +44,8 @@ class contaModel extends Utils
 
     public function updateConta($post)
     {
+
+        if($this->killPost($post)) return;
 
         $id_banco = $post['id_banco'];
         $descricao = $post['descricao'];

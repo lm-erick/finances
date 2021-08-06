@@ -85,15 +85,15 @@ require_once DIR . '/views/_includes/menu.php';
         <div class="row">
             <div class="col-md-4">
                 <label>Total de receitas no período</label>
-                <input class="form-control" type="text" name="receitas" class="money2" disabled>
+                <input class="form-control" type="text" name="receitas" disabled>
             </div>
             <div class="col-md-4">
                 <label>Total de despesas no período</label>
-                <input class="form-control" type="text" name="despesas" class="money2" disabled>
+                <input class="form-control" type="text" name="despesas" disabled>
             </div>
             <div class="col-md-4">
                 <label>Balanço do período</label>
-                <input class="form-control" type="text" name="balanço" class="money2" disabled>
+                <input class="form-control" type="text" name="balanço" disabled>
             </div>
         </div>
 

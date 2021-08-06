@@ -41,9 +41,6 @@ if (!isset($_SESSION['userId'])) {
 
   <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
 
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
- 
-  <script src="<?php echo JS ?>funcoesBI.js"></script>
 
 
 </head>

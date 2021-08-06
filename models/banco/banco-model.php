@@ -11,6 +11,8 @@ class bancoModel extends Utils
     public function salvarBanco($post)
     {
 
+        if($this->killPost($post)) return;
+
         $id_user = $_SESSION['userId'];
         $nome = $post['nome'];
         $codBanco = $post['cod_banco'];
@@ -33,6 +35,8 @@ class bancoModel extends Utils
 
     public function updateBanco($post)
     {
+
+        if($this->killPost($post)) return;
 
         $id_banco = $post['id_banco'];
         $nome = $post['nome'];

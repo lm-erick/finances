@@ -37,4 +37,18 @@ class Utils
 
     }
 
+    public function killPost($post){
+
+        $control = false;
+
+        foreach ($post as $value) {
+
+            if(empty($value)) $control = true;
+
+        }
+
+        return $control;
+
+    }
+
 }

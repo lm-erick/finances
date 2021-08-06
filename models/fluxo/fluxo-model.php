@@ -11,6 +11,7 @@ class fluxoModel extends Utils
     public function salvarFluxo($post)
     {
 
+        
         $descricao = $post['descricao'];
         $data_vencimento = $post['data_vencimento'];
         $data_pagamento = $post['data_pagamento'];
@@ -47,6 +48,7 @@ class fluxoModel extends Utils
 
     public function updateFluxo($post)
     {
+
         $id_fluxo = $post['id_fluxo'];
         $descricao = $post['descricao'];
         $data_vencimento = $post['data_vencimento'];
@@ -133,8 +135,6 @@ class fluxoModel extends Utils
         if( $tipo_data == 'pagamento' ) $query .= "AND data_pagamento >= '$data_de' AND data_pagamento <= '$data_ate' ";
 
         $query .= " GROUP BY tipo";
-
-        echo '<pre>'; print_r( $query);
 
         try {
 

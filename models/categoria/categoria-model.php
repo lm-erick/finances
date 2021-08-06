@@ -10,6 +10,7 @@ class categoriaModel extends Utils
 
     public function salvarCategoria($post)
     {
+        if($this->killPost($post)) return;
 
         $nome = $post['nome'];
         $id_user = $_SESSION['userId'];
@@ -32,6 +33,8 @@ class categoriaModel extends Utils
     public function updateCategoria($post)
     {
 
+        if($this->killPost($post)) return;
+        
         $id_categoria = $post['id_categoria'];
         $nome = $post['nome'];
 
